@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fyy.dao.TopicDao" >     
+    
+    <select id="selectTopicList" parameterType="topic" resultType="topic">
+	    SELECT * FROM topic where TopicYear='2019' and releaseSingal='1'
+	    <if test="topicId !=null">
+    			and topicId like "%"#{topicId}"%" 
+    		</if> 
+    		<if test="topicName !=null">
+    			and topicName like "%"#{topicName}"%" 
+    		</if>
+    		<if test="majorLimit !=null">
+    			and majorLimit like "%"#{majorLimit}"%"
+    		</if> 	    					    
+    </select>
+    
+     <insert id="optTopic" parameterType="String">
+    	INSERT INTO choose VALUES (#{userId},#{topicId})  
+     </insert>
+     
+     <delete id="deleteTopic" parameterType="String">
+     	delete from topic where topicId=#{topicId}
+     </delete>
+     
+     <select id="selectTopicMsg" parameterType="String" resultType="list">
+	    select a.topicId,a.topicName,a.demand,a.numberLimit,a.majorLimit,a.deadline,
+	    a.releaseSingal,b.userId from topic a join choose b on a.topicId=b.topicId in
+	    (select topicId from choose where userId=#{userId})	      
+    </select>
+</mapper> 	
+    	
+   
