@@ -11,18 +11,15 @@ import com.fyy.service.LoginService;
 
 @Service("loginService")
 @Transactional
-public class LoginServiceImpl implements LoginService{
-
-	@Autowired
-	private LoginDao loginDao;
-	
-	@Override
-	public Login findLogin(String userId, String password) {
-		Login login = this.loginDao.findLogin(userId, password);		
-		return login;
-	}
-	
-	
-
-
+public class LoginServiceImpl implements LoginService {
+    @Autowired
+    private LoginDao loginDao;
+    //获取登陆表中对应的用户信息
+    public Login findLoginUser(String userId, String password,String userState){
+        return this.loginDao.findLoginUser(userId,password,userState);
+    }
+    //更新登录的状态标识为,登录和注销的时候使用
+    public int updateRemarks(String remarks, String userId){
+        return this.loginDao.updateRemarks(remarks,userId);
+    }
 }

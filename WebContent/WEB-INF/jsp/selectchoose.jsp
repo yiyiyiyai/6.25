@@ -11,43 +11,50 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>已选课题</title>
+<title>我选择的课题</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath }/topic/list.action">
+<form >
 	<table>
+	登录用户：${USER_SESSION.userId}
 		<tbody>
-		<c:forEach items="${topicmsg}" var="topicmsg">
+		<c:forEach items="${mytopicmsg}" var="mytopicmsg">
 		<tr>
 			<td>课题编号</td>
-			<td>${topicmsg.TopicId }</td>
+			<td>${mytopicmsg.topicId }</td>
 		</tr>
 		<tr>
 			<td>课题名称</td>
-			<td>${topicmsg.TopicName }</td>
+			<td>${mytopicmsg.topicName }</td>
 		</tr>
 		<tr>
 			<td>发布教师</td>
-			<td></td>
+			<td>${mytopicmsg.userName }</td>
 		</tr>
 		<tr>
 			<td>具体要求</td>
-			<td>${topicmsg.demand }</td>
+			<td>${mytopicmsg.demand }</td>
 		</tr>
 		<tr>
 			<td>人数限制</td>
-			<td>${topicmsg.numberLimit }</td>
+			<td>${mytopicmsg.numberLimit }</td>
+		</tr>
+		<tr>
+			<td>已选人数</td>
+			<td>${mytopicmsg.numberNow }</td>
 		</tr>
 		<tr>
 			<td>方向限制</td>
-			<td>${topicmsg.majorLimit }</td>
+			<td>${mytopicmsg.majorLimit }</td>
 		</tr>
 		<tr>
 			<td>截止日期</td>
-			<td>${topicmsg.deadline }</td>
+			<td>${mytopicmsg.deadline }</td>
 		</tr>
 		<tr>
-			<td colspan="2"><input type="submit" value="删除该课题并重新选择课题" ></td>
+			<td colspan="2">
+			<a href="<%=basePath%>topic/deletemychoose.action?userId=${USER_SESSION.userId}" >删除该课题</a>
+			</td>
 			<td></td>
 		</tr>
 		</c:forEach>

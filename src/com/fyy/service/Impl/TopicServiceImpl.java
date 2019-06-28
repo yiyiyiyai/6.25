@@ -9,61 +9,51 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fyy.dao.TopicDao;
 import com.fyy.po.Topic;
-import com.fyy.po.Users;
+
 import com.fyy.service.TopicService;
 
 @Service("topicService")
 @Transactional
-public class TopicServiceImpl implements TopicService{
-	
+public class TopicServiceImpl implements TopicService {
+
 	@Autowired
 	private TopicDao topicDao;
 
 	@Override
-	public List<Topic> findTopicList(String topicId, String topicName, String majorLimit) {
-		Topic topic=new Topic();
-		if(StringUtils.isNotBlank(topicId)) {
+	public List<Topic> findTopicList(String topicId, String topicName, String majorLimit, String userName) {
+		Topic topic = new Topic();
+		if (StringUtils.isNotBlank(topicId)) {
 			topic.setTopicId(topicId);
 		}
-		if(StringUtils.isNotBlank(topicName)) {
+		if (StringUtils.isNotBlank(topicName)) {
 			topic.setTopicName(topicName);
 		}
-		if(StringUtils.isNotBlank(majorLimit)) {
+		if (StringUtils.isNotBlank(majorLimit)) {
 			topic.setMajorLimit(majorLimit);
 		}
-		List<Topic> topics=topicDao.selectTopicList(topic);	
+		if (StringUtils.isNotBlank(userName)) {
+			topic.setUserName(userName);
+		}
+		List<Topic> topics = topicDao.findTopicList(topicId, topicName, majorLimit, userName);
 		return topics;
-	}	
-	/*教师界面课程*/
-	/*
-	 * public List<Topic> findTopicList2(String topicId,String topicName,String
-	 * userName){ Topic topic=new Topic(); if(StringUtils.isNotBlank(topicId)) {
-	 * topic.setTopicId(topicId); } if(StringUtils.isNotBlank(topicName)) {
-	 * topic.setTopicName(topicName); } if(StringUtils.isNotBlank(userName)) {
-	 * topic.setTeacher(teacher); } List<Topic>
-	 * topics=topicDao.selectTopicList(topic); return topics; }
-	 */
+	}
 
-	/*学生选择课题*/
+	/* 学生选择课题 */
 	@Override
 	public int optTopic(String userId, String topicId) {
-		
-		return topicDao.optTopic(userId,topicId);
-		
+		return topicDao.optTopic(userId, topicId);
 	}
-	
-	/*老师或管理员删除课题*/
-	public int deleteTopic(String topicId) {
-		return topicDao.deleteTopic(topicId);
-	}
-	
+
 	@Override
-	public List<Topic> findTopicMsg(String topicId,String userId) {
-		Topic topic=new Topic();
-		Users users=new Users();
-		List<Topic> tmsg=topicDao.selectTopicMsg(topicId,userId);	
-		return tmsg;
+	public List<Topic> findMyTopic(String userId) {
+		Topic topic = new Topic();
+		List<Topic> mytopicmsg = topicDao.findMyTopic(userId);
+		return mytopicmsg;
 	}
-	 
+
+	@Override
+	public int deleteMychoose(String userId) {
+		return topicDao.deleteMychoose(userId);		
+	}
 
 }

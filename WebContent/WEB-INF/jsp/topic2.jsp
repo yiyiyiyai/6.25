@@ -16,11 +16,9 @@
 </head>
 <body>	
 	<h1>课程管理</h1>
-	<a href="#">查看我的课题</a>
-	<a>删除该课题</a>
-	<a>修改该课题</a>
-	<a href="#">结束所有课题</a>
-	<form method="get" action="${pageContext.request.contextPath }/topic2/list.action" >		
+	登录用户：${USER_SESSION.userId}
+	<a href="<%=basePath%>teacher/findTopicMe.action?userId=${USER_SESSION.userId}">查看我出的课题</a>
+	<form method="get" action="${pageContext.request.contextPath }/teacher/list.action" >		
 			<table>
 			<tr>
 				<td>课题编号</td>
@@ -31,7 +29,7 @@
 			<tr>
 				<td><input type="text" id="topicId" value="${topicId }" name="topicId"></td>
 				<td><input type="text" id="topicName" value="${topicName }" name="topicName"></td>				
-				<td><input type="text" id="userId" value="${userId }" name="userId"></td>
+				<td><input type="text" id="userName" value="${userName }" name="userName"></td>
 				<td></td>
 			</tr>
 		</table>
@@ -40,13 +38,13 @@
 				<tr>
 					<td>课题编号</td>
 					<td>课题名称</td>
-					<td>课题年份</td>					
+					<td>出题老师</td>										
 					<td>具体要求</td>
 					<td>人数要求</td>
+					<td>已选人数</td>
 					<td>方向限制</td>
-					<td>截止日期</td>					
-					<td>是否发布</td>					
-					<td>操作</td>
+					<td>截止日期</td>	
+					<td>课题年份</td>			
 				</tr>
 			</thead>
 			<tbody>
@@ -54,14 +52,13 @@
 					<tr>
 						<td>${topics.topicId }</td>
 						<td>${topics.topicName }</td>
-						<td>${topics.topicYear }</td>
+						<td>${topics.userName }</td>						
 						<td>${topics.demand }</td>
 						<td>${topics.numberLimit }</td>
+						<td>${topics.numberNow }</td>
 						<td>${topics.majorLimit }</td>			
-						<td>${topics.deadline }</td>			
-						<td>
-							<a href="<%=basePath%>topic/optTopic.action?topicId=${topics.topicId}" >添加</a>
-						</td>
+						<td>${topics.deadline }</td>
+						<td>${topics.topicYear }</td>						
 					</tr>
 				</c:forEach>
 			</tbody>

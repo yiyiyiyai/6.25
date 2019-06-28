@@ -12,60 +12,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>学生课程界面</title>
- <script type="text/javascript">
-	<%-- function OptTopic(topicId){
-		if(confirm('确认添加该课题吗？'+userId+topicId)){
-			$.ajax({
-		         url:"<%=basePath%>topic/optTopic.action",
-		         data:{"topicId":topicId},
-		         type:"POST",
-		         dataType:"XML",
-		         success:function(data){
-		        	 if(data=="OK"){
-							alert("添加课题成功！");
-							window.location.reload();
-						}else{
-							alert("添加课题失败！");
-							window.location.reload();
-						}
-		         }
-		     });
-			}
-		} --%>	 
-		<%-- function OptTopic(topicId){
-			if(confirm('确认添加该课题吗？')){
-				$.post("<%=basePath%>topic/optTopic.action",
-						{"topicId":topicId},
-					function(data){
-					if(data=="OK"){
-						alert("添加课题成功！");
-						window.location.reload();
-					}else{
-						alert("添加课题失败！");
-						window.location.reload();
-					}
-				});
-			}
-		} --%>
-</script>
+<title>学生课程界面</title> 
 </head>
 <body>	
-	登录用户：${LOGIN_SESSION.userId}
-	<a href="<%=basePath%>topic/topicmsg.action?userId=${LOGIN_SESSION.userId}">查看已选课程</a>
+	登录用户：${USER_SESSION.userId}
+	
+	<a href="<%=basePath%>topic/mytopic.action?userId=${USER_SESSION.userId}">查看已选课程</a>
 	<h1>课程管理</h1>		
-	<form method="get" action="${pageContext.request.contextPath }/topic/list.action" id="ttt">		
+	<form method="get" action="${pageContext.request.contextPath }/topic/list.action">		
 			<table>
 			<tr>
 				<td>课题编号</td>
 				<td>课题名称</td>
 				<td>专业限制</td>
+				<td>出题老师</td>
 				<td><button type="submit">查询</button></td>
-			</tr><br>
+			</tr>
+			<br>
 			<tr>
 				<td><input type="text" id="topicId" value="${topicId }" name="topicId"></td>
 				<td><input type="text" id="topicName" value="${topicName }" name="topicName"></td>				
 				<td><input type="text" id="majorLimit" value="${majorLimit }" name="majorLimit"></td>
+				<td><input type="text" id="userName" value="${userName }" name="userName"></td>
 				<td></td>
 			</tr>
 		</table>
@@ -76,7 +44,9 @@
 					<td>课题名称</td>
 					<td>具体要求</td>
 					<td>人数要求</td>
+					<td>已选人数</td>
 					<td>方向限制</td>
+					<td>出题老师</td>
 					<td>截止日期</td>					
 					<td>操作</td>
 				</tr>
@@ -88,10 +58,12 @@
 						<td>${topics.topicName }</td>
 						<td>${topics.demand }</td>
 						<td>${topics.numberLimit }</td>
-						<td>${topics.majorLimit }</td>			
+						<td>${topics.numberNow }</td>						
+						<td>${topics.majorLimit }</td>
+						<td>${topics.userName }</td>
 						<td>${topics.deadline }</td>			
 						<td>
-							<a href="<%=basePath%>topic/optTopic.action?topicId=${topics.topicId}&userId=${LOGIN_SESSION.userId}" >添加</a>							
+							<a href="<%=basePath%>topic/optTopic.action?topicId=${topics.topicId}&userId=${USER_SESSION.userId}" >添加</a>							
 						</td>						
 					</tr>
 				</c:forEach>

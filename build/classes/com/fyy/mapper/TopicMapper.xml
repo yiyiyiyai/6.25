@@ -3,32 +3,46 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.fyy.dao.TopicDao" >     
     
-    <select id="selectTopicList" parameterType="topic" resultType="topic">
-	    SELECT * FROM topic where TopicYear='2019' and releaseSingal='1'
-	    <if test="topicId !=null">
-    			and topicId like "%"#{topicId}"%" 
-    		</if> 
-    		<if test="topicName !=null">
-    			and topicName like "%"#{topicName}"%" 
-    		</if>
-    		<if test="majorLimit !=null">
-    			and majorLimit like "%"#{majorLimit}"%"
-    		</if> 	    					    
+    <select id="findTopicList" parameterType="String" resultType="topic">
+	  select t.topicId,tt.userId,u.userName,t.topicName,t.demand,t.numberLimit,t.numberNow,t.majorLimit,t.deadline
+      from topic as t
+      left join topic_teacher as tt on tt.topicId=t.topicId
+      left join users as u on u.userId=tt.userId
+		 <where>
+            <if test="topicId !=null and topicId !=''">
+        		t.topicId like concat('%',#{topicId},'%')
+        		</if>
+            <if test="topicName != null and topicName !=''">
+                t.topicName like concat('%',#{topicName},'%')
+            </if>
+            <if test="majorLimit !=null and majorLimit !=''">
+                t.majorLimit like concat('%',#{majorLimit},'%')
+            </if>
+            <if test="userName !=null and userName !=''">
+                tt.userName like concat('%',#{userName},'%')
+            </if>
+            and t.TopicYear='2019' and t.releaseSingal='1'  
+         </where>  					    
     </select>
     
      <insert id="optTopic" parameterType="String">
-    	INSERT INTO choose VALUES (#{userId},#{topicId})  
-     </insert>
+    	INSERT INTO choose VALUES (#{userId},#{topicId})     	 
+     </insert>     
      
-     <delete id="deleteTopic" parameterType="String">
-     	delete from topic where topicId=#{topicId}
+     <delete id="deleteMychoose" parameterType="String">
+     	delete from choose where userId=#{userId}
      </delete>
      
-     <select id="selectTopicMsg" parameterType="String" resultType="list">
-	    select a.topicId,a.topicName,a.demand,a.numberLimit,a.majorLimit,a.deadline,
-	    a.releaseSingal,b.userId from topic a join choose b on a.topicId=b.topicId in
-	    (select topicId from choose where userId=#{userId})	      
+     <select id="findMyTopic" parameterType="String" resultType="topic">
+	    select c.userId,c.topicId,t.topicName,u.userName,t.demand,t.numberLimit,
+	    t.numberNow,t.majorLimit,t.deadline,tt.userId from choose as c
+		left join topic_teacher as tt on tt.topicId=c.topicId
+		left join topic as t on t.topicId=c.topicId
+		left join users as u on tt.userId=u.userId
+		where c.userId=#{userId}   
     </select>
+    
+    
 </mapper> 	
     	
    

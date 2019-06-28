@@ -9,5 +9,7 @@
 	<mappers>
 		<mapper resource="com/fyy/mapper/TopicMapper.xml" />
 		<mapper resource="com/fyy/mapper/LoginMapper.xml" />
+		<mapper resource="com/fyy/mapper/TeacherMapper.xml" />
+		<mapper resource="com/fyy/mapper/ManagerMapper.xml" />
 	</mappers>
 </configuration>

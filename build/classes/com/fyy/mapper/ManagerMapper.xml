@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fyy.dao.ManagerDao" >     
+    
+    <select id="findStudentList" parameterType="String" resultType="user">
+	  select u.userId,u.userName,u.gender,u.enterYear,u.className,u.majorIn,u.selectedSignal,l.userState 
+		from users as u
+		left join login as l on l.userId=u.userId
+		 <where>
+            <if test="userId !=null and userId !=''">
+        		u.userId like concat('%',#{userId},'%')
+        	</if>
+        	<if test="userName !=null and userName !=''">
+        		u.userName like concat('%',#{userName},'%')
+        	</if>
+        	<if test="gender !=null and gender !=''">
+        		u.gender =#{gender}
+        	</if>
+        	<if test="className !=null and className !=''">
+        		u.className like concat('%',#{className},'%')
+        	</if>
+        	<if test="majorIn !=null and majorIn !=''">
+        		u.majorIn like concat('%',#{majorIn},'%')
+        	</if>
+        	<if test="enterYear !=null and enterYear !=''">
+        		u.enterYear =#{enterYear}
+        	</if>
+        	<if test="selectedSignal !=null and selectedSignal !=''">
+        		u.selectedSignal = #{selectedSignal}
+        	</if>            
+            and l.userState='user'
+         </where>  					    
+    </select>   
+     
+     <delete id="deleteStu" parameterType="String">
+     	delete from users where userId=#{userId};
+     	delete from login where userId=#{userId};
+     	delete from choose where userId=#{userId}
+     </delete>     
+     
+     <insert id="addStu" >
+     	insert into users(userId,userName,gender,enterYear,className,majorIn,selectedSignal) 
+     	values(#{user.userId},#{user.userName},#{user.gender},#{user.enterYear},#{user.className},#{user.majorIn},0);
+     	insert into login(userId,password,userState,remarks) values(#{user.userId},'123456','user',0)
+     </insert>
+     
+     <select id="toeditStu" parameterType="String" resultType="user">
+     	select * from users where userId=#{userId}
+     </select>
+     
+     <update id="editStu" parameterType="String">
+     	update users set userName=#{user.userName},className=#{user.className},majorIn=#{user.majorIn}
+     	where userId=#{user.userId}
+     </update>
+</mapper> 	
+    	
+   
